@@ -18,7 +18,7 @@ app.post('/analyze', async (req, res) => {
           {
             role: "user",
             content: [
-              { type: "text", text: "Answer in max 5 words only" },
+              { type: "text", text: "You are an MCQ solver. Read the multiple choice question in this image and return ONLY the correct option (e.g., 'A', 'B') or the exact correct answer text. Provide absolutely NO explanation, NO introduction, and NO extra words." },
               {
                 type: "image_url",
                 image_url: {
