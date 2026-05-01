@@ -11,9 +11,9 @@ app.post('/analyze', async (req, res) => {
     const { image } = req.body;
 
     const response = await axios.post(
-      "https://api.x.ai/v1/chat/completions",
+      "https://api.groq.com/openai/v1/chat/completions",
       {
-        model: "grok-vision",
+        model: "llama-3.2-11b-vision-preview",
         messages: [
           {
             role: "user",
@@ -21,7 +21,9 @@ app.post('/analyze', async (req, res) => {
               { type: "text", text: "Answer in max 5 words only" },
               {
                 type: "image_url",
-                image_url: `data:image/png;base64,${image}`
+                image_url: {
+                  url: `data:image/png;base64,${image}`
+                }
               }
             ]
           }
@@ -29,7 +31,7 @@ app.post('/analyze', async (req, res) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.GROK_API_KEY}`,
+          Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
           "Content-Type": "application/json"
         }
       }
