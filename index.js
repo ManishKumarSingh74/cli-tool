@@ -18,7 +18,7 @@ app.post('/analyze', async (req, res) => {
           {
             role: "user",
             content: [
-              { type: "text", text: "You are an MCQ solver. Read the multiple choice question in this image and return ONLY the correct option (e.g., 'A', 'B') or the exact correct answer text. Provide absolutely NO explanation, NO introduction, and NO extra words." },
+              { type: "text", text: "You are an expert MCQ solver. You must follow these exact steps: First, carefully analyze the image, read the question, and evaluate all options step-by-step inside <thinking>...</thinking> tags to ensure you are correct. Then, output ONLY the final correct option letter (like A, B, C, or D) inside <answer>...</answer> tags. Example: <thinking>...</thinking><answer>B</answer>" },
               {
                 type: "image_url",
                 image_url: {
@@ -27,7 +27,8 @@ app.post('/analyze', async (req, res) => {
               }
             ]
           }
-        ]
+        ],
+        temperature: 0.1
       },
       {
         headers: {
@@ -37,8 +38,12 @@ app.post('/analyze', async (req, res) => {
       }
     );
 
+    const fullText = response.data.choices[0].message.content;
+    const answerMatch = fullText.match(/<answer>([\s\S]*?)<\/answer>/i);
+    const finalResult = answerMatch ? answerMatch[1].trim() : fullText.slice(0, 80);
+
     res.json({
-      result: response.data.choices[0].message.content
+      result: finalResult
     });
 
   } catch (err) {
