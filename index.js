@@ -22,7 +22,7 @@ app.post('/analyze', async (req, res) => {
               {
                 type: "image_url",
                 image_url: {
-                  url: `data:image/png;base64,${image}`
+                  url: `data:image/jpeg;base64,${image}`
                 }
               }
             ]
