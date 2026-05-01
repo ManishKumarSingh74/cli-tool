@@ -42,7 +42,11 @@ app.post('/analyze', async (req, res) => {
     });
 
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Groq API Error:", err.response?.data || err.message);
+    res.status(500).json({ 
+      error: err.message, 
+      details: err.response?.data || "No additional details" 
+    });
   }
 });
 
